@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 
 class signInForm extends Component {
@@ -7,8 +7,8 @@ class signInForm extends Component {
     super(props);
 
     this.state={
-      email:null,
-      password:null
+      email:"",
+      password:""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -52,6 +52,7 @@ class signInForm extends Component {
             <label className="FormField__Label" htmlFor="email">Email</label>
             <input type="text" id="email" className="FormField__Input" placeholder="Enter your Email address" name="email" value={this.email} onChange={this.handleChange} />
           </div>
+
           <div className="FormFields">
             <label className="FormField__Label" htmlFor="password">Password</label>
             <input type="password" id="password" className="FormField__Input" placeholder="Enter your password" name="password" value={this.password}  onChange={this.handleChange}/>
@@ -59,6 +60,7 @@ class signInForm extends Component {
 
           <div className="FromFields">
             <button className="FormField__Button mr-20">Sign In </button>
+            <Link to="/forgetPass" className="FormField__ForgetPass--Link ">Forget your password ? </Link>
           </div>
         </form>
       </div>

@@ -1,9 +1,10 @@
 .App {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   background-color: #749c96;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 
 }
 
@@ -18,14 +19,15 @@
 
 .App__Form {
   overflow: auto;
-  height: 550px;
-  width: 750px;
+  height: 80%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   padding: 20px 40px;
   border-radius: 20px;
   background-color: #2E4158;
   box-shadow: 0px 10px 50px #080808;
+  margin-top: 15px;
 
 }
 
@@ -59,6 +61,13 @@
 .PageSwitcher__Item:last-child {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+.forgetPass-text{
+  color: #a7b4c5;
+  font-size: 1.2em;
+  display: flex;
+  margin-top: 10px;
+  
 }
 
 .FormCenter {
@@ -159,17 +168,21 @@
 
 }
 
-.FormField__TermsLink {
-  color: white;
-  border-bottom: 1px solid #199087;
+.FormField__ForgetPass--Link {
+  color: rgb(207, 201, 201);
   text-decoration: none;
   display: inline-block;
   padding-bottom: 2px;
   margin-left: 5px;
+  font-size: .8em;
 }
+.FormField__ForgetPass--Link:hover{
+  border-bottom:2px solid #199087;
+  font-size: .9em;
 
+} 
 .errorMassage {
-  color: red;
+  color: #d16c6c;
   font-size: 0.9em;
 }
 
@@ -179,7 +192,7 @@
   border: none;
   color: white;
   outline: none;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid #d16c6c;
   font-size: 1em;
   font-weight: 300;
   padding-bottom: 10px;
@@ -208,4 +221,55 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.NavBar{
+  display: flex;
+  flex-direction: row;
+  /* width: 750px; */
+  width: 85%;
+  height: 50px;
+  color: white;
+  background-color: #2E4158;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.NavBarItem{
+  height: 50px;
+  color: #b3c1d3;
+  background-color: #2E4158;
+  font-weight: 300;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: inline-block;
+  text-decoration: none;
+  /* margin-left: 20px; */
+  border-radius: 20px;
+
+}
+
+.NavBarItem--Active{
+  color: white;
+  background-color: #199087;
+  border-bottom: 1px solid #199087;
+  border-radius: 20px;
+
+}
+
+.NavBarItem-LogOut{
+
+  height: 50px;
+  color: #e28a84;
+  background-color: #2E4158;
+  font-weight: 300;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 20px;
+
+  
 }

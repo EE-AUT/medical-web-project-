@@ -28,7 +28,7 @@ class homeForm extends Component {
                         <input type="file" id="customFile" accept="image/*" onChange={this.imageHandler}/>
                     </label>
 
-                <input type="submit" value='Upload' className="FormField__Button mr-20" />
+                <button  className="FormField__Button mr-20" > Analysis </button>
 
             </div>
 

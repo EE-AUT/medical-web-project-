@@ -1,7 +1,7 @@
 // const { Component } = require("react")
 
 import React, { Component } from "react";
-import {  NavLink  } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const emailRegex = RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
 
@@ -13,8 +13,8 @@ const formValid = ({ formErrors, doctorID, ...rest }) => {
         val.length === 0 && (valid = false)
     });
 
-    if (rest.isDoctor && doctorID.length===0){
-        valid=false
+    if (rest.isDoctor && doctorID.length === 0) {
+        valid = false
     }
 
     return valid;
@@ -28,6 +28,7 @@ class signUpForm extends Component {
         this.state = {
             fullName: "",
             email: "",
+            phoneNumber:"",
             password: "",
             rePassword: "",
             isDoctor: false,
@@ -35,6 +36,7 @@ class signUpForm extends Component {
             formErrors: {
                 fullName: "",
                 email: "",
+                phoneNumber:"",
                 password: "",
                 rePassword: "",
             }
@@ -71,6 +73,9 @@ class signUpForm extends Component {
             case 'email':
                 formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address';
                 break;
+            case 'phoneNumber':
+                formErrors.phoneNumber= value.length ===11 ?'':'Minimum 11 numbers required';
+                break
             case 'password':
                 formErrors.password = value.length < 6 ? 'Minimum 6 characters required' : '';
                 break;
@@ -78,7 +83,7 @@ class signUpForm extends Component {
                 formErrors.rePassword = this.state.password !== value ? 'Password are not matching' : '';
                 break;
             case 'doctorID':
-                formErrors.doctorID = value.length < 1  ? 'Please fill out this feild' : '';
+                formErrors.doctorID = value.length < 1 ? 'Please fill out this feild' : '';
                 break;
             default:
         }
@@ -134,6 +139,12 @@ class signUpForm extends Component {
                     </div>
                     {(<span className="errorMassage">{formErrors.email}</span>)}
 
+                    <div className="FormFields">
+                        <label className="FormField__Label" htmlFor="Phone Number">phone number</label>
+                        <input type="text" id="phoneNumber" className="FormField__Input" placeholder="Enter your phone number" name="phoneNumber" value={this.phoneNumber} onChange={this.handleChange} />
+                    </div>
+                    {(<span className="errorMassage">{formErrors.phoneNumber}</span>)}
+
                     <div className="FormFields" >
                         <label className="FormField__Label"
                             htmlFor="password" > Password </label>
@@ -187,7 +198,7 @@ class signUpForm extends Component {
 
 
                     <div className="FromFields" >
-                        <button className="FormField__Button mr-20" > Sign Up </button>
+                        <button className="FormField__Button mr-20" onClick={this.handleSubmit} > Sign Up </button>
                     </div >
                 </form>
             </div >
