@@ -1,20 +1,43 @@
 // const { Component } = require("react")
 
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import {  NavLink  } from "react-router-dom";
 
+const emailRegex = RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
 
+const formValid = ({ formErrors, doctorID, ...rest }) => {
+    let valid = true
+
+    Object.values(formErrors).forEach(val => { val.length > 0 && (valid = false) });
+    Object.values(rest).forEach(val => {
+        val.length === 0 && (valid = false)
+    });
+
+    if (rest.isDoctor && doctorID.length===0){
+        valid=false
+    }
+
+    return valid;
+
+};
 
 class signUpForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            fullName:null,
-            email: null,
-            password: null,
-            rePassword: null,
-            isDocter: false
+            fullName: "",
+            email: "",
+            password: "",
+            rePassword: "",
+            isDoctor: false,
+            doctorID: "",
+            formErrors: {
+                fullName: "",
+                email: "",
+                password: "",
+                rePassword: "",
+            }
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -23,25 +46,54 @@ class signUpForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state)
+
+        if (formValid(this.state)) {
+            console.log('submited');
+        }
+        else {
+            console.log("Error")
+
+        }
 
     }
 
     handleChange(e) {
-        e.preventDefault()
         let target = e.target;
         let value = target.type === "checkbox" ? target.checked : target.value;
         let name = target.name;
 
+        let formErrors = this.state.formErrors;
+
+        switch (name) {
+            case 'fullName':
+                formErrors.fullName = value.length < 1 ? 'Please fill out this feild' : '';
+                break;
+            case 'email':
+                formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address';
+                break;
+            case 'password':
+                formErrors.password = value.length < 6 ? 'Minimum 6 characters required' : '';
+                break;
+            case 'rePassword':
+                formErrors.rePassword = this.state.password !== value ? 'Password are not matching' : '';
+                break;
+            case 'doctorID':
+                formErrors.doctorID = value.length < 1  ? 'Please fill out this feild' : '';
+                break;
+            default:
+        }
+
         this.setState(
             {
-                [name]: value
+                formErrors,
+                [name]: value,
             }
+            , () => console.log(this.state)
         );
     }
     render() {
+        const { formErrors } = this.state;
         return (
-
             <div className="FormCenter" >
                 <div className="PageSwitcher">
                     <NavLink to="/sign-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign In</NavLink>
@@ -60,59 +112,66 @@ class signUpForm extends Component {
                             htmlFor="fullName" > full Name </label>
                         <input type="text"
                             id="fullName"
-                            className="FormField__Input"
+                            className={formErrors.fullName.length > 0 ? "errorInput" : "FormField__Input"}
                             placeholder="Enter your full name"
                             name="fullName"
                             onChange={this.handleChange}
                             value={this.state.fullName} />
-
                     </div>
+                    {(<span className="errorMassage">{formErrors.fullName}</span>)}
+
                     <div className="FormFields" >
 
                         <label className="FormField__Label"
                             htmlFor="email" > Email </label>
                         <input type="text"
                             id="email"
-                            className="FormField__Input"
+                            className={formErrors.email.length > 0 ? "errorInput" : "FormField__Input"}
                             placeholder="Enter your Email address"
-                            name="email" 
+                            name="email"
                             onChange={this.handleChange}
-                            value={this.state.email} />                            
-
+                            value={this.state.email} />
                     </div>
-                    <div className="FormFields" >
+                    {(<span className="errorMassage">{formErrors.email}</span>)}
 
+                    <div className="FormFields" >
                         <label className="FormField__Label"
                             htmlFor="password" > Password </label>
                         <input type="password"
                             id="password"
-                            className="FormField__Input"
+                            className={formErrors.password.length > 0 ? "errorInput" : "FormField__Input"}
                             placeholder="Enter your password"
-                            name="password" 
+                            name="password"
                             onChange={this.handleChange}
-                            value={this.state.password} />                            
-
+                            value={this.state.password} />
                     </div>
-                    <div className="FormFields" >
+                    {(<span className="errorMassage">{formErrors.password}</span>)}
 
+                    <div className="FormFields" >
                         <label className="FormField__Label"
                             htmlFor="repeat password" > Repeat Password </label>
                         <input type="password"
-                            id="repeatPassword"
-                            className="FormField__Input"
+                            id="rePassword"
+                            className={formErrors.rePassword.length > 0 ? "errorInput" : "FormField__Input"}
                             placeholder="Repeat your password"
-                            name="repeatPassword" 
+                            name="rePassword"
                             onChange={this.handleChange}
-                            value={this.state.rePassword} />                            
-
+                            value={this.state.rePassword}
+                        />
                     </div>
+                    {(<span className="errorMassage">{formErrors.rePassword}</span>)}
 
+                    <div className="FormFields" >
+                        <label className="FormField__CheckboxLabel" >
 
-                    <label className="FormField__CheckboxLabel" >
-
-                        <input className="FormField__Checkbox"
-                            type="checkbox"
-                            name="doctor" /> Are you a doctor ?</label>
+                            <input className="FormField__Checkbox"
+                                type="checkbox"
+                                id="isDoctor"
+                                name="isDoctor"
+                                onChange={this.handleChange}
+                                checked={this.state.isDoctor}
+                            /> Are you a doctor ?</label>
+                    </div>
                     <div className="FormFields" >
 
                         <input type="text"
@@ -120,14 +179,14 @@ class signUpForm extends Component {
                             className="FormField__Input"
                             placeholder="Enter your doctorID"
                             name="doctorID"
-                            hidden={true} 
+                            hidden={this.state.isDoctor ? false : true}
                             onChange={this.handleChange}
-                            value={this.state.isDocter} />
+                            value={this.state.doctorID} />
                     </div >
+                    {(<span className="errorMassage">{formErrors.doctorID}</span>)}
 
 
                     <div className="FromFields" >
-
                         <button className="FormField__Button mr-20" > Sign Up </button>
                     </div >
                 </form>
