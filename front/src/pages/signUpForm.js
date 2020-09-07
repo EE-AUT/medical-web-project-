@@ -3,6 +3,9 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
+import { connect } from 'react-redux'
+import * as actions from '../store/actions/auth'
+
 const emailRegex = RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
 
 const formValid = ({ formErrors, doctorID, ...rest }) => {
@@ -51,6 +54,8 @@ class signUpForm extends Component {
 
         if (formValid(this.state)) {
             console.log('submited');
+            console.log(this.state)
+            this.props.onRegister(this.state.email, this.state.password, this.state.fullName, this.state.phoneNumber, this.state.isDoctor, this.state.doctorID)
         }
         else {
             console.log("Error")
@@ -93,7 +98,7 @@ class signUpForm extends Component {
                 formErrors,
                 [name]: value,
             }
-            , () => console.log(this.state)
+            // , () => console.log(this.state)
         );
     }
     render() {
@@ -207,4 +212,20 @@ class signUpForm extends Component {
     }
 }
 
-export default signUpForm;
+const mapStateToProps = (state) => {
+  return {
+      loading: state.loading,
+      error: state.error
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onRegister: (email, password, FullName, phoneNumber, is_doctor, doctor_id) => 
+            dispatch(actions.authSignup(email, password, FullName, phoneNumber, is_doctor, doctor_id))
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(signUpForm);

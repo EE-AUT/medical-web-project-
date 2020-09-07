@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from "react-router-dom";
+import { connect } from 'react-redux'
+import * as actions from '../store/actions/auth'
+// import signUpForm from './signUpForm';
 
 
 class signInForm extends Component {
@@ -18,6 +21,8 @@ class signInForm extends Component {
   handleSubmit(e){
     e.preventDefault();
     console.log(this.state)
+    this.props.onAuth(this.state.email, this.state.password)
+    // this.props.history.push('/')
 
   }
 
@@ -34,8 +39,8 @@ class signInForm extends Component {
     );
   }
   render() {
+    // console.log(this.props.loading , this.props.error)
     return (
-
       <div className="FormCenter">
         <div className="PageSwitcher">
           <NavLink to="/sign-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign In</NavLink>
@@ -69,4 +74,21 @@ class signInForm extends Component {
   }
 }
 
-export default signInForm;
+
+
+const mapStateToProps = (state) => {
+  return {
+      loading: state.loading,
+      error: state.error
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(signInForm);
