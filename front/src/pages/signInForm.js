@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { NavLink, Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth'
-// import signUpForm from './signUpForm';
 
 
 class signInForm extends Component {
@@ -20,9 +19,14 @@ class signInForm extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    console.log(this.state)
-    this.props.onAuth(this.state.email, this.state.password)
-    // this.props.history.push('/')
+    this.props.onAuth(this.state.email, this.state.password);
+    if (localStorage.getItem('signInError')==='1'){
+      console.log("Sign in")
+      this.props.history.push('/')
+    }
+    else{
+      console.log("error in sign in")
+    }
 
   }
 
@@ -39,9 +43,9 @@ class signInForm extends Component {
     );
   }
   render() {
-    // console.log(this.props.loading , this.props.error)
     return (
-      <div className="FormCenter">
+      <div>
+      <div className="FormCenter" hidden={actions.tokenConvertor(localStorage.getItem('token'))? true : false}>
         <div className="PageSwitcher">
           <NavLink to="/sign-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign In</NavLink>
           <NavLink to="/sign-up" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign Up</NavLink>
@@ -64,10 +68,16 @@ class signInForm extends Component {
           </div>
 
           <div className="FromFields">
+            
             <button className="FormField__Button mr-20">Sign In </button>
             <Link to="/forgetPass" className="FormField__ForgetPass--Link ">Forget your password ? </Link>
           </div>
+          {/* <label className= "errorMassage_Image" >Your email or password is incorrect </label> */}
         </form>
+      </div>
+      <div hidden={actions.tokenConvertor(localStorage.getItem('token'))? false : true}>
+        <h1>you should logout and then you can Sign up or Sign in again</h1>
+      </div>
       </div>
     );
 

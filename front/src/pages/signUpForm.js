@@ -8,15 +8,13 @@ import * as actions from '../store/actions/auth'
 
 const emailRegex = RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
 
-const formValid = ({ formErrors, doctorID, ...rest }) => {
-    let valid = true
+const formValid = ({ fullNameError_hidden, emailError_hidden, phoneNumberError_hidden, passwordError_hidden, rePasswordError_hidden, doctorIDError_hidden, isDoctor, doctorID }) => {
+    let valid = false
+    if (fullNameError_hidden && emailError_hidden && passwordError_hidden && rePasswordError_hidden && phoneNumberError_hidden && doctorIDError_hidden) {
+        valid = true
+    }
 
-    Object.values(formErrors).forEach(val => { val.length > 0 && (valid = false) });
-    Object.values(rest).forEach(val => {
-        val.length === 0 && (valid = false)
-    });
-
-    if (rest.isDoctor && doctorID.length === 0) {
+    if (isDoctor && doctorID.length === 0) {
         valid = false
     }
 
@@ -31,18 +29,20 @@ class signUpForm extends Component {
         this.state = {
             fullName: "",
             email: "",
-            phoneNumber:"",
+            phoneNumber: "",
             password: "",
             rePassword: "",
             isDoctor: false,
             doctorID: "",
-            formErrors: {
-                fullName: "",
-                email: "",
-                phoneNumber:"",
-                password: "",
-                rePassword: "",
-            }
+
+            fullNameError_hidden: true,
+            emailError_hidden: true,
+            phoneNumberError_hidden: true,
+            passwordError_hidden: true,
+            rePasswordError_hidden: true,
+            doctorIDError_hidden: true,
+            signUpError_hidden: true
+            // You already have an account
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -51,15 +51,44 @@ class signUpForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        let need_to_return=false
+        if (this.state.fullName.length < 1) {
+            // this.state.fullNameError_hidden=false
+            this.setState({ fullNameError_hidden: false })
+            need_to_return=true;
+        }
+        if (!emailRegex.test(this.state.email)) {
+            this.setState({ emailError_hidden: false })
+            need_to_return=true;
+        }
+        if (this.state.phoneNumber.length !== 11) {
+            this.setState({ phoneNumberError_hidden: false })
+            need_to_return=true;
+        }
+        if (this.state.password < 6) {
+            this.setState({ passwordError_hidden: false })
+            need_to_return=true;
+        }
+        if (this.state.password !== this.state.rePassword) {
+            this.setState({ rePasswordError_hidden: false })
+            need_to_return=true;
+        }
+        if (this.state.isDoctor && this.state.doctorID < 1) {
+            this.setState({ doctorIDError_hidden: false })
+            need_to_return=true;
+        }
+        if (need_to_return){
+            return;
+        }
 
         if (formValid(this.state)) {
             console.log('submited');
-            console.log(this.state)
             this.props.onRegister(this.state.email, this.state.password, this.state.fullName, this.state.phoneNumber, this.state.isDoctor, this.state.doctorID)
+            // this.props.history.push('/sign-in')
+
         }
         else {
             console.log("Error")
-
         }
 
     }
@@ -69,40 +98,36 @@ class signUpForm extends Component {
         let value = target.type === "checkbox" ? target.checked : target.value;
         let name = target.name;
 
-        let formErrors = this.state.formErrors;
-
         switch (name) {
             case 'fullName':
-                formErrors.fullName = value.length < 1 ? 'Please fill out this feild' : '';
+                this.setState({ fullNameError_hidden: true });
                 break;
             case 'email':
-                formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address';
+                this.setState({ emailError_hidden: true });
                 break;
             case 'phoneNumber':
-                formErrors.phoneNumber= value.length ===11 ?'':'Minimum 11 numbers required';
-                break
+                this.setState({ phoneNumberError_hidden: true });
+                break;
             case 'password':
-                formErrors.password = value.length < 6 ? 'Minimum 6 characters required' : '';
+                this.setState({ passwordError_hidden: true });
                 break;
             case 'rePassword':
-                formErrors.rePassword = this.state.password !== value ? 'Password are not matching' : '';
+                this.setState({ rePasswordError_hidden: true });
                 break;
             case 'doctorID':
-                formErrors.doctorID = value.length < 1 ? 'Please fill out this feild' : '';
+                this.setState({ doctorIDError_hidden: true });
                 break;
             default:
+                break;
         }
 
         this.setState(
             {
-                formErrors,
-                [name]: value,
+                [name]: value
             }
-            // , () => console.log(this.state)
         );
     }
     render() {
-        const { formErrors } = this.state;
         return (
             <div className="FormCenter" >
                 <div className="PageSwitcher">
@@ -122,13 +147,13 @@ class signUpForm extends Component {
                             htmlFor="fullName" > full Name </label>
                         <input type="text"
                             id="fullName"
-                            className={formErrors.fullName.length > 0 ? "errorInput" : "FormField__Input"}
+                            className={this.state.fullNameError_hidden ? "FormField__Input" : "errorInput"}
                             placeholder="Enter your full name"
                             name="fullName"
                             onChange={this.handleChange}
                             value={this.state.fullName} />
                     </div>
-                    {(<span className="errorMassage">{formErrors.fullName}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.fullNameError_hidden}>Please fill out this feild</span>)}
 
                     <div className="FormFields" >
 
@@ -136,46 +161,49 @@ class signUpForm extends Component {
                             htmlFor="email" > Email </label>
                         <input type="text"
                             id="email"
-                            className={formErrors.email.length > 0 ? "errorInput" : "FormField__Input"}
+                            className={this.state.emailError_hidden ? "FormField__Input" : "errorInput"}
                             placeholder="Enter your Email address"
                             name="email"
                             onChange={this.handleChange}
                             value={this.state.email} />
                     </div>
-                    {(<span className="errorMassage">{formErrors.email}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.emailError_hidden}>Invalid email address</span>)}
 
                     <div className="FormFields">
                         <label className="FormField__Label" htmlFor="Phone Number">phone number</label>
-                        <input type="text" id="phoneNumber" className="FormField__Input" placeholder="Enter your phone number" name="phoneNumber" value={this.phoneNumber} onChange={this.handleChange} />
+                        <input type="text" id="phoneNumber"
+                        className={this.state.phoneNumberError_hidden ? "FormField__Input" : "errorInput"}
+                        placeholder="Enter your phone number" name="phoneNumber" value={this.phoneNumber} onChange={this.handleChange} />
                     </div>
-                    {(<span className="errorMassage">{formErrors.phoneNumber}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.phoneNumberError_hidden}>Minimum 11 numbers required</span>)}
 
                     <div className="FormFields" >
                         <label className="FormField__Label"
                             htmlFor="password" > Password </label>
                         <input type="password"
                             id="password"
-                            className={formErrors.password.length > 0 ? "errorInput" : "FormField__Input"}
+                            className={this.state.passwordError_hidden ? "FormField__Input" : "errorInput"}
                             placeholder="Enter your password"
                             name="password"
                             onChange={this.handleChange}
-                            value={this.state.password} />
+                            value={this.state.password}
+                        />
                     </div>
-                    {(<span className="errorMassage">{formErrors.password}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.passwordError_hidden} >Minimum 6 characters required</span>)}
 
                     <div className="FormFields" >
                         <label className="FormField__Label"
                             htmlFor="repeat password" > Repeat Password </label>
                         <input type="password"
                             id="rePassword"
-                            className={formErrors.rePassword.length > 0 ? "errorInput" : "FormField__Input"}
+                            className={this.state.rePasswordError_hidden ? "FormField__Input" : "errorInput"}
                             placeholder="Repeat your password"
                             name="rePassword"
                             onChange={this.handleChange}
                             value={this.state.rePassword}
                         />
                     </div>
-                    {(<span className="errorMassage">{formErrors.rePassword}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.rePasswordError_hidden} >Passwords are not matching</span>)}
 
                     <div className="FormFields" >
                         <label className="FormField__CheckboxLabel" >
@@ -192,14 +220,14 @@ class signUpForm extends Component {
 
                         <input type="text"
                             id="doctorID"
-                            className="FormField__Input"
+                            className={this.state.doctorIDError_hidden ? "FormField__Input" : "errorInput"}
                             placeholder="Enter your doctorID"
                             name="doctorID"
                             hidden={this.state.isDoctor ? false : true}
                             onChange={this.handleChange}
                             value={this.state.doctorID} />
                     </div >
-                    {(<span className="errorMassage">{formErrors.doctorID}</span>)}
+                    {(<span className="errorMassage" hidden={this.state.doctorIDError_hidden}>Please fill out this feild</span>)}
 
 
                     <div className="FromFields" >
@@ -213,17 +241,17 @@ class signUpForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-      loading: state.loading,
-      error: state.error
-  }
+    return {
+        loading: state.loading,
+        error: state.error
+    }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-      onRegister: (email, password, FullName, phoneNumber, is_doctor, doctor_id) => 
+    return {
+        onRegister: (email, password, FullName, phoneNumber, is_doctor, doctor_id) =>
             dispatch(actions.authSignup(email, password, FullName, phoneNumber, is_doctor, doctor_id))
-  }
+    }
 }
 
 

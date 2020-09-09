@@ -15,7 +15,7 @@ class App extends Component {
     this.props.onTryAutoSignup();
   }
   render() {
-    console.log(this.props.isAuthenticated, "tset")
+    // console.log(this.props.isAuthenticated, "tset")
     return (
       <BrowserRouter>
         <div className="App">

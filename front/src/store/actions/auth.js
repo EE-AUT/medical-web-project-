@@ -25,8 +25,11 @@ export const authFail = error => {
 
 
 export const logout = () => {
-    localStorage.removeItem('user');
+    console.log("Logout")
+    localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
+    window.location.reload(); 
+
     return{
         type: actionTypes.AUTH_LOGOUT
     }
@@ -58,12 +61,15 @@ export const authLogin = (uname, pass) => {
             const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
-            dispatch(authSuccess(token));
+            dispatch(authSuccess(token)); 
             dispatch(checkAuthTimeout(3600));
+            localStorage.setItem('signInError',0)
+
         })
         .catch(err => {
-            console.log(err.response)
             dispatch(authFail(err))
+            localStorage.setItem('signInError',1)
+
         })
 
     }
@@ -84,6 +90,8 @@ export const authSignup = (email, _password_, _FullName_, _phoneNumber_, _is_doc
         })
         .then(res => {
             console.log(res)
+            console.log(res.data.email[0] )
+
             // const token = res.data.key;
             // const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
             // localStorage.setItem('token', token);
@@ -94,6 +102,7 @@ export const authSignup = (email, _password_, _FullName_, _phoneNumber_, _is_doc
         .catch(err=> {
             dispath(authFail(err))
             console.log(err.response)
+
         })
     }
 }
@@ -107,11 +116,23 @@ export const authCheckState = () => {
         } else {
             const expirationDate = new Date(localStorage.getItem('expirationDate'));
             if ( expirationDate <= new Date() ) {
-                dispatch(logout());
+                // dispatch(logout());
             } else {
                 dispatch(authSuccess(token));
                 dispatch(checkAuthTimeout( (expirationDate.getTime() - new Date().getTime()) / 1000) );
             }
         }
     }
+}
+
+
+export const tokenConvertor=(token)=>{
+    if(token===null){
+        return false
+    }
+    else{
+        return true
+    }
+
+
 }
