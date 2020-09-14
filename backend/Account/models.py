@@ -51,3 +51,6 @@ def create_auth_token(sender, instance= None, created= False, **kwargs):
         Token.objects.create(user=instance)
     elif not created and instance.activate_doctor and instance.is_doctor:
         Token.objects.create(user=instance)
+
+
+

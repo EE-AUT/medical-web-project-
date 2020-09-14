@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 
+
 class RegistrationSerialier(serializers.ModelSerializer):
 
     class Meta:

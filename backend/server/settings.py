@@ -90,9 +90,9 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_iderm',
+        'NAME': 'test_server3',
         'USER': 'postgres',
-        'PASSWORD': 'ali147741',
+        'PASSWORD': '0021639450',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -139,7 +139,7 @@ STATIC_URL = '/static/'
 
 # new (for images)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 # new
 AUTH_USER_MODEL = 'Account.User'
