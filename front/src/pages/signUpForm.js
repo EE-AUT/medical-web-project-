@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
+import axios from 'axios'
 import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth'
 
@@ -83,8 +84,35 @@ class signUpForm extends Component {
 
         if (formValid(this.state)) {
             console.log('submited');
-            this.props.onRegister(this.state.email, this.state.password, this.state.fullName, this.state.phoneNumber, this.state.isDoctor, this.state.doctorID)
+            // this.props.onRegister(this.state.email, this.state.password, this.state.fullName, this.state.phoneNumber, this.state.isDoctor, this.state.doctorID)
             // this.props.history.push('/sign-in')
+            axios.post('http://localhost:8000/api_user/register/', {
+                email: this.state.email,
+                phone_number: this.state.phoneNumber,
+                password: this.state.password,
+                full_name: this.state.fullName,
+                register_type: "web_register",
+                is_doctor: this.state.isDoctor,
+                doctor_id: this.state.doctorID
+            })
+            .then(res => {
+                console.log(res)
+                console.log(res.data.email.length)
+                if (res.data.email.length === 1){
+                    localStorage.setItem('signUpError',1)
+                    console.log("user already exist")
+                }
+                else{
+                    localStorage.setItem('signUpError',0)
+                    this.props.history.push('/sign-in')
+                }
+
+            })
+            .catch(err=> {
+                localStorage.setItem('signUpError',1)
+                console.log("error")
+                console.log(err.response)
+            })
 
         }
         else {

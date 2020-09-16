@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth'
+import axios from 'axios'
 
 
 class signInForm extends Component {
@@ -19,15 +20,25 @@ class signInForm extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    this.props.onAuth(this.state.email, this.state.password);
-    if (localStorage.getItem('signInError')==='1'){
-      console.log("Sign in")
-      this.props.history.push('/')
-    }
-    else{
-      console.log("error in sign in")
-    }
+    axios.post('http://localhost:8000/api_user/login/', {
+      password: this.state.password,
+      username: this.state.email
+    })
+    .then(res => {
+        const token = res.data.token;
+        // if token null it's mean doctor not register yet
+        localStorage.setItem('token', token);
+        localStorage.setItem('signInError',0)
+        console.log("sign in True")
+        console.log(token)
 
+    })
+    .catch(err => {
+        localStorage.setItem('signInError',1)
+        console.log("error in sign in")
+
+    })
+  
   }
 
   handleChange(e){
