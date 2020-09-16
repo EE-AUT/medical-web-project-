@@ -3,4 +3,10 @@ from .models import Image
 
 # Register your models here.
 
-admin.site.register(Image)
+@admin.register(Image)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'pic')
+
+
+
+

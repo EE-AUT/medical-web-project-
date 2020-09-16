@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 from .managers import CustomUserManager
 
+from django.contrib import admin
 
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -43,6 +44,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'{self.email}'
+
 
 
 @receiver(post_save, sender= settings.AUTH_USER_MODEL)
