@@ -12,7 +12,8 @@ class signInForm extends Component {
     this.state = {
       email: "",
       password: "",
-      Error_hidden: true
+      Error_hidden: true,
+      doctorError:true
 
     };
 
@@ -29,11 +30,17 @@ class signInForm extends Component {
       .then(res => {
         const token = res.data.token;
         // if token null it's mean doctor not register yet
+        if (token==null){
+          this.setState({
+            doctorError:false
+          })
+        }
+        else{
         localStorage.setItem('token', token);
         this.setState({ Error_hidden: true })
         this.props.history.push('/')
         window.location.reload();
-
+        }
       })
       .catch(err => {
         this.setState({
@@ -69,6 +76,7 @@ class signInForm extends Component {
                 activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
           </div>
           <label className="errorMassage_sign" hidden={this.state.Error_hidden}>The sign-in details are incorrect</label>
+          <label className="errorMassage_sign" hidden={this.state.doctorError}>Your account has not been activated</label>
           <form className="FormFields" onSubmit={this.handleSubmit}>
 
             <div className="FormFields">
