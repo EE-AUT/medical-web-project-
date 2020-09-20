@@ -7,54 +7,55 @@ class homeForm extends Component {
 
     constructor(props) {
         super(props);
-    
-        this.state={
+
+        this.state = {
             img: "http://zinogene.com/wp-content/uploads/2020/04/Social-Media-Video-Specs-Feature-Image.png",
-            img2:null,
-            Error_hidden:true
+            img2: null,
+            Error_hidden: true,
+            sign_in: actions.tokenConvertor(localStorage.getItem('token')) ? false : true
         };
-    
+
         this.handleSubmit = this.handleSubmit.bind(this);
-      }
-    imageHandler = (e) =>{
+    }
+    imageHandler = (e) => {
         const reader = new FileReader();
         this.setState({
             img: e.target.files[0],
-            img2:e.target.files[0]
+            img2: e.target.files[0]
         })
-        reader.onload=()=>{
-            if(reader.readyState===2){
-                this.setState({img:reader.result})
+        reader.onload = () => {
+            if (reader.readyState === 2) {
+                this.setState({ img: reader.result })
             }
         }
-        
+
         reader.readAsDataURL(e.target.files[0])
 
-    
+
     };
-    handleSubmit(e){
+    handleSubmit(e) {
         e.preventDefault();
-        if(this.state.img2===null){
+        if (this.state.img2 === null) {
             this.setState({
-                Error_hidden:false  
+                Error_hidden: false
             })
         }
-        else{
+        else {
             let form_data = new FormData();
             form_data.append('pic', this.state.img2, this.state.img2.name);
             let url = 'http://localhost:8000/api_image/create/';
             axios.post(url, form_data, {
-            headers: {
-                'content-type': 'multipart/form-data',
-                'Authorization' : 'token '.concat(localStorage.getItem('token'))
-            }
+                headers: {
+                    'content-type': 'multipart/form-data',
+                    'Authorization': 'token '.concat(localStorage.getItem('token'))
+                }
             })
-            .then(res => {
-            console.log(res.data);
-            })
-            .catch(err => console.log(err.response))
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => console.log(err.response))
             this.setState({
-                Error_hidden:true
+                Error_hidden: true
             })
         }
     };
@@ -62,25 +63,40 @@ class homeForm extends Component {
     render() {
         const { img } = this.state
         return (
-        <form className="homefields" onSubmit={this.handleSubmit}>
-            <div className="custom-file" >
-                <div className="img-holder" hidden={actions.tokenConvertor(localStorage.getItem('token'))? false : true} >
-                    <img src={img}  alt="" className="img"></img>
-                </div>
-                    <label className="fileCustom__Input" hidden={actions.tokenConvertor(localStorage.getItem('token'))? false : true}>
-                        <input type="file" id="customFile" accept="image/*" onChange={this.imageHandler}/>
+            <form onSubmit={this.handleSubmit}>
+                <div className="custom-file" >
+                    <div className="img-holder" hidden={this.state.sign_in} >
+                        <img src={img} alt="" className="img"></img>
+                    </div>
+                    <label className="fileCustom__Input" hidden={this.state.sign_in}>
+                        <input type="file" id="customFile" accept="image/*" onChange={this.imageHandler} />
                     </label>
 
-                <button  className="FormField__Button mr-20" hidden={actions.tokenConvertor(localStorage.getItem('token'))? false : true} > Analysis </button>
-                <label className="errorMassage_Image"  hidden={this.state.Error_hidden}>Please upload your image first</label>
-            </div>
-            <label hidden={actions.tokenConvertor(localStorage.getItem('token'))? true : false}>Welcome Please sign up or sign in</label>
-
-        </form>
+                    <button className="FormField__Button mr-20" hidden={this.state.sign_in} > Analysis </button>
+                    <label className="errorMassage_Image" hidden={this.state.Error_hidden}>Please upload your image first</label>
+                </div>
+                <label hidden={!this.state.sign_in}>Welcome Please sign up or sign in</label>
+                <div className="exmaple">
+                    <h1 hidden={this.state.sign_in} > Examples :</h1></div>
+                <div className="imgs_Example"  >
+                    <div   className='img_Example_holder' hidden={this.state.sign_in}>
+                        <a href="https://i.ibb.co/V37n938/IMG-20200920-190524-105.jpg">
+                            <img src="https://i.ibb.co/V37n938/IMG-20200920-190524-105.jpg" alt="" className="img_Example" border="0">
+                            </img></a>                  </div>
+                    <div className='img_Example_holder'  hidden={this.state.sign_in}>
+                        <a  href="https://i.ibb.co/PmyxDQx/IMG-20200920-190525-719.jpg">
+                            <img src="https://i.ibb.co/PmyxDQx/IMG-20200920-190525-719.jpg" alt="" className="img_Example" border="0">
+                            </img></a>                  </div>
+                    <div className='img_Example_holder'  hidden={this.state.sign_in} >
+                        <a href="https://i.ibb.co/C0DJ2X4/IMG-20200920-190521-736.jpg">
+                            <img src="https://i.ibb.co/C0DJ2X4/IMG-20200920-190521-736.jpg" alt="" className="img_Example" border="0">
+                            </img></a>
+                    </div></div>
+            </form>
         );
     }
 }
 
 export default homeForm
-  
+
 

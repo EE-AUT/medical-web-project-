@@ -42,7 +42,8 @@ class signUpForm extends Component {
             passwordError_hidden: true,
             rePasswordError_hidden: true,
             doctorIDError_hidden: true,
-            signUpError_hidden: true
+            signUpError_hidden: true,
+            existenceError_hidden:true,
             // You already have an account
         };
 
@@ -54,7 +55,6 @@ class signUpForm extends Component {
         e.preventDefault();
         let need_to_return=false
         if (this.state.fullName.length < 1) {
-            // this.state.fullNameError_hidden=false
             this.setState({ fullNameError_hidden: false })
             need_to_return=true;
         }
@@ -83,9 +83,6 @@ class signUpForm extends Component {
         }
 
         if (formValid(this.state)) {
-            console.log('submited');
-            // this.props.onRegister(this.state.email, this.state.password, this.state.fullName, this.state.phoneNumber, this.state.isDoctor, this.state.doctorID)
-            // this.props.history.push('/sign-in')
             axios.post('http://localhost:8000/api_user/register/', {
                 email: this.state.email,
                 phone_number: this.state.phoneNumber,
@@ -96,27 +93,20 @@ class signUpForm extends Component {
                 doctor_id: this.state.doctorID
             })
             .then(res => {
-                console.log(res)
-                console.log(res.data.email.length)
                 if (res.data.email.length === 1){
-                    localStorage.setItem('signUpError',1)
-                    console.log("user already exist")
+                    this.setState({existenceError_hidden:false})
+                    this.setState({ emailError_hidden: false })
                 }
                 else{
-                    localStorage.setItem('signUpError',0)
+                    this.setState({existenceError_hidden:true})
                     this.props.history.push('/sign-in')
                 }
 
             })
             .catch(err=> {
-                localStorage.setItem('signUpError',1)
-                console.log("error")
-                console.log(err.response)
+                console.log("error catch in signUp")
             })
 
-        }
-        else {
-            console.log("Error")
         }
 
     }
@@ -132,6 +122,7 @@ class signUpForm extends Component {
                 break;
             case 'email':
                 this.setState({ emailError_hidden: true });
+                this.setState({existenceError_hidden:true})
                 break;
             case 'phoneNumber':
                 this.setState({ phoneNumberError_hidden: true });
@@ -167,6 +158,7 @@ class signUpForm extends Component {
                         className="FormTitle__Link">Sign In</NavLink> or <NavLink exact to="/sign-up"
                             activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</NavLink>
                 </div>
+                <label className="errorMassage_sign" hidden={this.state.existenceError_hidden}>Email already exists</label>
                 <form className="FormFields"
                     onSubmit={this.handleSubmit} >
 

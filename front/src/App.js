@@ -7,6 +7,7 @@ import homeForm from './pages/homeForm'
 import Navigation from "./Navigation"
 import ForgetPassForm from "./pages/forgetPass"
 import Download from "./pages/download"
+import documentation from "./pages/documentation"
 import './App.css';
 import * as actions from './store/actions/auth'
 
@@ -26,12 +27,7 @@ class App extends Component {
             <Route path="/sign-in" component={signInForm}></Route>
             <Route path="/forgetPass" component={ForgetPassForm}></Route>
             <Route path="/Download" component={Download}></Route>
-
-            {/* <Route exact path = "/" component={ homeForm } render={(props) => <homeForm text="Hello, " {...this.props} />}/>
-            <Route path="/sign-up" component={signUpForm} render={(props) => <signUpForm  {...this.props} />}/>
-            <Route path="/sign-in" component={signInForm} render={(props) => <signInForm  {...this.props} />}/>
-            <Route path="/forgetPass" component={ForgetPassForm} render={(props) => <ForgetPassForm  {...this.props} />}/>
-            <Route path="/Download" component={Download} render={(props) => <Download  {...this.props} />}/> */}
+            <Route path="/documentation" component={documentation}></Route>
 
           </div>
         </div>

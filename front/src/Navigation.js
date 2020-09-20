@@ -13,6 +13,7 @@ export class Navigation extends Component{
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav>
                 <NavLink exact to="/" activeClassName="NavBarItem--Active" className="NavBarItem">Home</NavLink>
+                <NavLink to="/documentation" activeClassName="NavBarItem--Active" className="NavBarItem">documentation</NavLink>
                 <NavLink to="/Download" activeClassName="NavBarItem--Active" className="NavBarItem">Download</NavLink>
                 <label className="NavBarItem-LogOut" onClick={actions.logout} >Log Out</label>
                 </Nav>
@@ -25,6 +26,7 @@ export class Navigation extends Component{
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav>
                 <NavLink exact to="/" activeClassName="NavBarItem--Active" className="NavBarItem">Home</NavLink>
+                <NavLink to="/documentation" activeClassName="NavBarItem--Active" className="NavBarItem">documentation</NavLink>
                 <NavLink to="/Download" activeClassName="NavBarItem--Active" className="NavBarItem">Download</NavLink>
                 <NavLink to="/sign-up" activeClassName="NavBarItem--Active" className="NavBarItem" >Sign Up</NavLink>
                 <NavLink to="/sign-in" activeClassName="NavBarItem--Active" className="NavBarItem" >Sign In</NavLink>
