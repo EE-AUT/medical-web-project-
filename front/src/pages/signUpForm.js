@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
 import axios from 'axios'
-import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth'
 
 const emailRegex = RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
@@ -28,6 +27,7 @@ class signUpForm extends Component {
         super(props);
 
         this.state = {
+            isUser: actions.tokenConvertor(localStorage.getItem('token')),
             fullName: "",
             email: "",
             phoneNumber: "",
@@ -148,7 +148,8 @@ class signUpForm extends Component {
     }
     render() {
         return (
-            <div className="FormCenter" >
+            <div>
+            <div className="FormCenter" hidden={this.state.isUser} >
                 <div className="PageSwitcher">
                     <NavLink to="/sign-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign In</NavLink>
                     <NavLink to="/sign-up" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign Up</NavLink>
@@ -255,25 +256,15 @@ class signUpForm extends Component {
                     </div >
                 </form>
             </div >
+            <div hidden={!this.state.isUser}>
+            <h1>you should logout and then you can Sign up or Sign in again</h1>
+            </div>
+        </div>
         );
 
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        loading: state.loading,
-        error: state.error
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onRegister: (email, password, FullName, phoneNumber, is_doctor, doctor_id) =>
-            dispatch(actions.authSignup(email, password, FullName, phoneNumber, is_doctor, doctor_id))
-    }
-}
 
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(signUpForm);
+export default signUpForm;

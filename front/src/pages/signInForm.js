@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { NavLink, Link } from "react-router-dom";
-import { connect } from 'react-redux'
 import * as actions from '../store/actions/auth'
 import axios from 'axios'
 
@@ -10,11 +9,11 @@ class signInForm extends Component {
     super(props);
 
     this.state = {
+      isUser: actions.tokenConvertor(localStorage.getItem('token')),
       email: "",
       password: "",
       Error_hidden: true,
       doctorError:true
-
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -65,7 +64,7 @@ class signInForm extends Component {
   render() {
     return (
       <div>
-        <div className="FormCenter" hidden={actions.tokenConvertor(localStorage.getItem('token')) ? true : false}>
+        <div className="FormCenter" hidden={this.state.isUser}>
           <div className="PageSwitcher">
             <NavLink to="/sign-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign In</NavLink>
             <NavLink to="/sign-up" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item ">Sign Up</NavLink>
@@ -97,7 +96,7 @@ class signInForm extends Component {
           </form>
 
         </div>
-        <div hidden={actions.tokenConvertor(localStorage.getItem('token')) ? false : true}>
+        <div hidden={!this.state.isUser}>
           <h1>you should logout and then you can Sign up or Sign in again</h1>
         </div>
       </div>
@@ -107,20 +106,4 @@ class signInForm extends Component {
 }
 
 
-
-const mapStateToProps = (state) => {
-  return {
-    loading: state.loading,
-    error: state.error
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onAuth: (username, password) => dispatch(actions.authLogin(username, password))
-  }
-}
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(signInForm);
+export default signInForm;

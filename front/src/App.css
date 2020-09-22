@@ -1,10 +1,11 @@
 .App {
-  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #749c96;
   align-items: center;
-  /* justify-content: center; */
 
 }
 
@@ -18,19 +19,23 @@
 }
 
 .App__Form {
-  overflow: auto;
-  height: 80%;
+  min-height: 80vh;
   width: 60%;
   display: flex;
   flex-direction: column;
   padding: 20px 40px;
-  border-radius: 20px;
+  border-radius: 15px;
   background-color: #2E4158;
-  box-shadow: 0px 10px 50px #080808;
-  margin-top: 15px;
-
+  box-shadow: 0px 10px 40px #080808;
+  margin-bottom: 3%;
+  margin-top: 60px ;
 }
+@media(max-width:768px){
+  .App__Form{
+    width: 80%;
 
+  }
+}
 .PageSwitcher {
   display: flex;
   justify-content: flex-end;
@@ -40,7 +45,7 @@
 .PageSwitcher__Item {
   background-color: #4C5D72;
   color: #9DA6B1;
-  padding: 10px 25px;
+  padding: 5px 25px;
   cursor: pointer;
   font-size: .9em;
   border: none;
@@ -49,9 +54,16 @@
   text-decoration: none;
 }
 
+@media(max-width:768px){
+  .PageSwitcher__Item{
+    font-size: .7em;
+    padding: 5px 10px;
+  }
+}
+
 .PageSwitcher__Item--Active {
   background-color: #74b6ac;
-  color: white;
+  color: wheat;
 }
 
 .PageSwitcher__Item:first-child {
@@ -62,16 +74,10 @@
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
 }
-.forgetPass-text{
-  color: #a7b4c5;
-  font-size: 1.2em;
-  display: flex;
-  margin-top: 10px;
-  
-}
+
 
 .FormCenter {
-  margin-bottom: 100px;
+  margin-bottom: 10px;
 }
 
 .FormTitle {
@@ -94,17 +100,24 @@
 }
 
 .FormTitle__Link--Active {
-  color: white;
+  color: wheat;
   border-bottom: 1px solid #199087;
 }
 
+@media(max-width:768px){
+  .FormTitle__Link{
+    font-size: 1.3rem;
+    margin: 0  3px;
+    padding: 10px 0px;
+  }
+}
 .FormField {
   margin-bottom: 40px;
 }
 
 .FormField__Label {
   display: block;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: .9em;
   color: white;
   margin-top: 15px;
@@ -124,37 +137,52 @@
 
 .FormField__Input::placeholder {
   color: #5ED0C0;
+  font-size: 1.2em;
 }
 
+@media(max-width:768px){
+  .FormField__Label{
+    font-size: 0.8em;
+  }
+  .FormField__Input::placeholder{
+    font-size: 0.85em;
+  }
+}
 .FormField__Button {
   background-color: #74b6ac;
   color: white;
   border: none;
   outline: none;
   border-radius: 25px;
-  padding: 12px 65px;
+  padding: 15px 60px;
   font-size: 1.1em;
   font-weight: 500;
   margin-top: 20px;
-  margin-bottom: 20px;
   box-shadow: 0px 10px 50px #08080885;
-  
 }
 
-.FormField__Button:hover{
+.FormField__Button:hover,
+.FormField__Button:active{
   color: #74b6ac;
   background-color: white;
   border: 2px solid #74b6ac;
 }
+@media(max-width:768px){
+  .FormField__Button{
+    padding: 10px 30px;
+    font-size: 0.9em;
+    font-weight: 400;
 
+  }
+}
 
-.FormField__Link {
+/* .FormField__Link {
   color: #66707D;
   text-decoration: none;
   display: inline-block;
   border-bottom: 1.5px solid #225E62;
   padding-bottom: 5px;
-}
+} */
 
 .FormField__CheckboxLabel {
   color: #a2a9b1;
@@ -166,9 +194,12 @@
   top: 1.5px;
   margin-top: 20px;
   margin-bottom: 10px;
-
 }
-
+@media(max-width:768px){
+  .FormField__CheckboxLabel{
+    font-size: 0.8em;
+  }
+}
 .FormField__ForgetPass--Link {
   color: rgb(207, 201, 201);
   text-decoration: none;
@@ -180,8 +211,17 @@
 .FormField__ForgetPass--Link:hover{
   border-bottom:2px solid #199087;
   font-size: .9em;
-
 } 
+@media(max-width:768px){
+  .FormField__ForgetPass--Link{
+    font-size: .6em;
+    margin-left: 0px;
+
+  }
+  .FormField__ForgetPass--Link:hover{
+    font-size: 0.7em;
+  }
+}
 .errorMassage {
   color: #d16c6c;
   font-size: 0.9em;
@@ -198,22 +238,32 @@
   font-weight: 300;
   padding-bottom: 10px;
   margin-top: 0px;
-  
 }
+@media(max-width:768px){
+  .errorMassage{
+    font-size: 0.7em;
+  }
+  .errorInput{
+    font-size: 0.8em;
+  }
+}
+.fileCustom__Lable{
+  width: 80% ;
+  height: 30px;
 
-.fileCustom__Input{
-  width: 85%;
   background-color: transparent;
   color: #939eac;
   outline: none;
   border: 2px solid #199087;
-  padding-bottom: 0px;
-  margin-top: 0px;
   border-radius: 5px;
 }
+.fileCustom__Input{
+  width: 100%;
+  height: 30px;
+}
 .img-holder{
-  width: 85%;
-  height: 300px;
+  width: 80%;
+  height: 370px;
   border: 3px solid #199087;
   border-radius: 5px;
   margin: 1rem;
@@ -223,22 +273,39 @@
   height: 100%;
   object-fit: cover;
 }
+@media(max-width:550px){
+  .fileCustom__Lable{
+    width: 120px;
+  }
+  .fileCustom__Input{
+    width: 120px;
+  }
+  .img-holder{
+    width: 100%;
+    height: 250px;
+  }
+}
 .exmaple{
   display: flex;
   justify-content: left;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   color: rgb(106, 232, 236);
+  font-size: 1em;
+
 }
 .imgs_Example{
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 .img_Example_holder{
   width: 30%;
-  height: 150px;
+  height: 25vh;
+  min-width: 50px;
+  max-height: 150px;
   border: 3px solid #199087;
   border-radius: 5px;
-  margin: 1rem;
+  margin: 0.1rem;
 }
 
 .img_Example{
@@ -246,16 +313,22 @@
   height: 100%;
   object-fit: cover;
 }
+@media(max-width:768px){
+  .exmaple{
+    font-size: 0.5em;
+    font-weight: 100;
 
+  }
+}
 .NavBar{
   display: flex;
   flex-direction: row;
-  /* width: 750px; */
+  position: fixed; 
   width: 85%;
   height: 50px;
   color: white;
   background-color: #2E4158;
-  border-radius: 20px;
+  border-radius: 10px;
   margin-top: 10px;
   box-shadow: 0px 10px 50px #080808;
 }
@@ -271,7 +344,7 @@
   display: inline-block;
   text-decoration: none;
   /* margin-left: 20px; */
-  border-radius: 20px;
+  border-radius: 10px;
 
 }
 
@@ -279,22 +352,20 @@
   color: white;
   background-color: #199087;
   border-bottom: 1px solid #199087;
-  border-radius: 20px;
+  border-radius: 10px;
 
 }
 
 .NavBarItem-LogOut{
 
   height: 50px;
-  color: #e28a84;
-  background-color: #2E4158;
+  color: #e2655c;
   font-weight: 300;
   padding: 10px 25px;
   cursor: pointer;
   font-size: 1.2em;
   display: inline-block;
   text-decoration: none;
-  border-radius: 20px;
 }
 
 .errorMassage_Image{

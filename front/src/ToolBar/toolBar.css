@@ -1,0 +1,57 @@
+.toolBar{
+    position: fixed;
+    width: 100%;
+    background-color: #2E4158;
+    height: 50px;
+}
+.toolBar_navigation{
+    display:flex;
+    height: 100%;
+    align-items: center;
+}
+.tollBar_logo{
+    margin-left: 1rem;
+}
+.tollBar_logo a{
+    color: white;
+    text-decoration: none ;
+    font-size: 1.5rem;
+}
+
+.spacer{
+    flex: 1;
+    color: darkmagenta;
+}
+
+.toolBar_navigation_item ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.toolBar_navigation_item li{
+    padding: 0 0.5rem ;
+}
+.toolBar_navigation_item a {
+    color: wheat;
+    text-decoration: none;
+}
+.toolBar_navigation_item a:hover,
+.toolBar_navigation_item a:active{
+    color: orange;
+}
+
+
+@media (max-width:768px){
+    .toolBar_navigation_item{
+        display: none;
+    }
+}
+@media(min-width:769px){
+    .toolBarToggleButton{
+        display: none;
+    }
+    .tollBar_logo{
+        margin-left: 4px;
+    }
+}

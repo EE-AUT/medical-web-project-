@@ -1,26 +1,43 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
-import { connect } from 'react-redux'
 import signUpForm from "./pages/signUpForm";
 import signInForm from "./pages/signInForm";
-import homeForm from './pages/homeForm'
-import Navigation from "./Navigation"
-import ForgetPassForm from "./pages/forgetPass"
-import Download from "./pages/download"
-import documentation from "./pages/documentation"
+import homeForm from './pages/homeForm';
+import ForgetPassForm from "./pages/forgetPass";
+import Download from "./pages/download";
+import documentation from "./pages/documentation";
 import './App.css';
-import * as actions from './store/actions/auth'
+import Toolbar from './ToolBar/toolBar';
+import SideDrawer from './slidDrawer/SideDrawer'
+import BackDrops from './backDrops/backDrops'
 
 class App extends Component {
-  componentDidMount() {
-    this.props.onTryAutoSignup();
+
+  state={
+    sideDrawerOpen:false
   }
+  drawerToggleClickHandler=()=>{
+    console.log("hiiiiiiii")
+    this.setState((prevState)=>{
+      return{sideDrawerOpen:!prevState.sideDrawerOpen};
+    });
+  };
+  backDropClickHandler=()=>{
+    this.setState({sideDrawerOpen:false})
+  };
+
   render() {
-    // console.log(this.props.isAuthenticated, "tset")
+    let backDrop;
+    if(this.state.sideDrawerOpen){
+   
+      backDrop=<BackDrops click={this.backDropClickHandler}/>
+    }
     return (
       <BrowserRouter>
         <div className="App">
-          <Navigation/>
+          <Toolbar drawerClickHandler={this.drawerToggleClickHandler}/>
+          <SideDrawer show={this.state.sideDrawerOpen}/>;
+          {backDrop}
           <div className="App__Form">
             <Route exact path='/' component={homeForm}></Route>
             <Route path="/sign-up" component={signUpForm}></Route>
@@ -37,33 +54,5 @@ class App extends Component {
 }
 
 
-// we can all this in each one of component
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
-  }
-}
-
-
-const mapStateToProps = state => {
-  return{
-    isAuthenticated: state.token !== null
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
-
-
-// export default connect(
-//   state => {
-//     return{
-//       isAuthenticated: state.token !== null
-//     }
-//   },
-//   dispatch => {
-//     return {
-//       onTryAutoSignup: () => dispatch(actions.authCheckState())
-//     }
-//   }
-//   )(App);
+export default App

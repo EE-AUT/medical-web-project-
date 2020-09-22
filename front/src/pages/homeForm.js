@@ -68,8 +68,8 @@ class homeForm extends Component {
                     <div className="img-holder" hidden={this.state.sign_in} >
                         <img src={img} alt="" className="img"></img>
                     </div>
-                    <label className="fileCustom__Input" hidden={this.state.sign_in}>
-                        <input type="file" id="customFile" accept="image/*" onChange={this.imageHandler} />
+                    <label className="fileCustom__Lable" hidden={this.state.sign_in}>
+                        <input type="file" id="customFile" className="fileCustom__Input" accept="image/*" onChange={this.imageHandler} />
                     </label>
 
                     <button className="FormField__Button mr-20" hidden={this.state.sign_in} > Analysis </button>
@@ -77,7 +77,7 @@ class homeForm extends Component {
                 </div>
                 <label hidden={!this.state.sign_in}>Welcome Please sign up or sign in</label>
                 <div className="exmaple">
-                    <h1 hidden={this.state.sign_in} > Examples :</h1></div>
+                    <h1  hidden={this.state.sign_in} > Examples :</h1></div>
                 <div className="imgs_Example"  >
                     <div   className='img_Example_holder' hidden={this.state.sign_in}>
                         <a href="https://i.ibb.co/V37n938/IMG-20200920-190524-105.jpg">
