@@ -8,6 +8,9 @@ from Image.models import Image
 from Image.api.serializers import ImageSerializer
 
 
+import random
+
+
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated, ))
 def api_create_Image_view(request):
@@ -19,7 +22,9 @@ def api_create_Image_view(request):
         serializer = ImageSerializer(post_Imaged, data= request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status= status.HTTP_201_CREATED)
+            # serializer.data["result"] = "5465"
+            data = {"result" : random.randint(10e2, 10e5)}
+            return Response(data, status= status.HTTP_201_CREATED)
         print("error ")
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
 

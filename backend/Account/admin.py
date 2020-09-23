@@ -8,6 +8,6 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email', 'phone_number', 'register_type', 'is_doctor', 'activate_doctor')
+    list_display = ('full_name', 'email', 'phone_number', 'register_type', 'is_superuser', 'is_doctor', 'activate_doctor')
 
 
