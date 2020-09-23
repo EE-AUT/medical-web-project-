@@ -1,7 +1,7 @@
 .App {
   overflow-y: auto;
   overflow-x: hidden;
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #749c96;
@@ -12,7 +12,7 @@
 .custom-file{
   display: flex;
   flex-direction: column;
-  padding: 20px 20px;
+  padding: 10px 20px;
   justify-content: center;
   align-items: center;
 
@@ -45,7 +45,7 @@
 .PageSwitcher__Item {
   background-color: #4C5D72;
   color: #9DA6B1;
-  padding: 5px 25px;
+  padding: 10px 25px;
   cursor: pointer;
   font-size: .9em;
   border: none;
@@ -176,14 +176,6 @@
   }
 }
 
-/* .FormField__Link {
-  color: #66707D;
-  text-decoration: none;
-  display: inline-block;
-  border-bottom: 1.5px solid #225E62;
-  padding-bottom: 5px;
-} */
-
 .FormField__CheckboxLabel {
   color: #a2a9b1;
   font-size: .9em;
@@ -247,10 +239,17 @@
     font-size: 0.8em;
   }
 }
+
+.homePage_isNotUser{
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-decoration: none;
+  /* margin: 1em; */
+}
 .fileCustom__Lable{
   width: 80% ;
   height: 30px;
-
   background-color: transparent;
   color: #939eac;
   outline: none;
@@ -275,7 +274,7 @@
 }
 @media(max-width:550px){
   .fileCustom__Lable{
-    width: 120px;
+    width: 118px;
   }
   .fileCustom__Input{
     width: 120px;
@@ -320,6 +319,25 @@
 
   }
 }
+
+.Diagnosis_holder{
+  width: 80%;
+  height: auto;
+  border: 3px solid #199087;
+  border-radius: 5px;
+  margin: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.Diagnosis{
+  display: flex;
+  font-size: 1.5em;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: wheat;
+}
+
 .NavBar{
   display: flex;
   flex-direction: row;
@@ -380,4 +398,12 @@
   color: #e05959;
   font-size: 1.5em;
 
+}
+@media(max-width:768px){
+  .errorMassage_Image{
+    font-size: 0.9em;
+  }
+  .errorMassage_sign{
+    font-size: 0.9em;
+  }
 }

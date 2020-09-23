@@ -165,7 +165,7 @@ class signUpForm extends Component {
 
                     <div className="FormFields" >
                         <label className="FormField__Label"
-                            htmlFor="fullName" > full Name </label>
+                            htmlFor="fullName" > Full Name </label>
                         <input type="text"
                             id="fullName"
                             className={this.state.fullNameError_hidden ? "FormField__Input" : "errorInput"}
@@ -191,7 +191,7 @@ class signUpForm extends Component {
                     {(<span className="errorMassage" hidden={this.state.emailError_hidden}>Invalid email address</span>)}
 
                     <div className="FormFields">
-                        <label className="FormField__Label" htmlFor="Phone Number">phone number</label>
+                        <label className="FormField__Label" htmlFor="Phone Number">Phone number</label>
                         <input type="text" id="phoneNumber"
                         className={this.state.phoneNumberError_hidden ? "FormField__Input" : "errorInput"}
                         placeholder="Enter your phone number" name="phoneNumber" value={this.phoneNumber} onChange={this.handleChange} />
