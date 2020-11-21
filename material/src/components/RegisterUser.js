@@ -22,13 +22,13 @@ export class RegisterUser extends Component {
   state = {
     userData: {
       email: "",
-      phone_number: "",
+      phone: "",
       password: "",
-      full_name: "",
-      register_type: "",
-      is_doctor: false,
-      doctor_id: 0,
+      name: "",
+      role: "user",
+      doctorId: "",
     },
+    is_doctor: false,
     terms: false,
     pass: "",
     passConf: "",
@@ -58,7 +58,7 @@ export class RegisterUser extends Component {
 
   handleFullNamaChange = (e) => {
     const { userData } = this.state;
-    userData.full_name = e.target.value;
+    userData.name = e.target.value;
     this.setState({ userData });
   };
   handleEmailChange = (e) => {
@@ -79,19 +79,19 @@ export class RegisterUser extends Component {
     this.setState({ userData, errors });
   };
   handlePhoneChange = (e) => {
-    const phone_number = e.target.value;
+    const phone = e.target.value;
     const { userData, errors } = this.state;
-    if (phone_number == "") {
+    if (phone == "") {
       errors.phone.ok = true;
       errors.phone.msg = "";
-    } else if (validator.isMobilePhone(phone_number, "fa-IR")) {
+    } else if (validator.isMobilePhone(phone, "fa-IR")) {
       errors.phone.ok = true;
       errors.phone.msg = "";
     } else {
       errors.phone.ok = false;
       errors.phone.msg = "phone number too short";
     }
-    userData.phone_number = phone_number;
+    userData.phone = phone;
     this.setState({ userData, errors });
   };
   pass = (e) => {
@@ -121,6 +121,9 @@ export class RegisterUser extends Component {
     }
     userData.password = this.state.pass;
     this.setState({ userData, errors });
+  };
+  submit = () => {
+    this.props.register(this.state.userData);
   };
   render() {
     const { classes } = this.props;
@@ -152,7 +155,7 @@ export class RegisterUser extends Component {
               id="outlined-basic"
               label="Full Name"
               variant="outlined"
-              value={userData.full_name}
+              value={userData.name}
               onChange={this.handleFullNamaChange}
             />
           </div>
@@ -178,7 +181,7 @@ export class RegisterUser extends Component {
               label="Phone"
               variant="outlined"
               onChange={this.handlePhoneChange}
-              value={userData.phone_number}
+              value={userData.phone}
               error={!errors.phone.ok}
             />
           </div>
@@ -227,11 +230,12 @@ export class RegisterUser extends Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={userData.is_doctor}
+                  checked={this.state.is_doctor}
                   onChange={(e) => {
-                    userData.is_doctor = e.target.checked;
+                    userData.role = e.target.checked ? "doctor" : "user";
                     this.setState({
                       userData,
+                      is_doctor: e.target.checked,
                     });
                   }}
                   name="gilad"
@@ -241,7 +245,7 @@ export class RegisterUser extends Component {
             />
           </div>
           <div
-            hidden={!userData.is_doctor}
+            hidden={!this.state.is_doctor}
             className={`col-sm-12 col-md-6 ${classes.textField}`}
           >
             <TextField
@@ -250,6 +254,12 @@ export class RegisterUser extends Component {
               }}
               id="outlined-basic"
               label="Doctor ID"
+              onChange={(e) => {
+                userData.doctorId = e.target.value;
+                this.setState({
+                  userData,
+                });
+              }}
               variant="outlined"
             />
           </div>
@@ -287,6 +297,7 @@ export class RegisterUser extends Component {
               color="primary"
               endIcon={<PersonAddIcon />}
               className={classes.button}
+              onClick={this.submit}
             >
               Register
             </Button>

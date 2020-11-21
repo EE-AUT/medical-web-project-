@@ -8,9 +8,12 @@ import { compose } from "redux";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
+import { autoLogin } from "./actions/auth";
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AboutUs from "./components/pages/AboutUs";
 import RegisterUser from "./components/RegisterUser";
+import PredictionForm from "./components/PredictionForm";
 import Error404 from "./components/pages/Error404";
 import GitRepos from "./components/pages/GitRepos";
 import Acknowledgement from "./components/pages/Acknowledgement";
@@ -45,7 +48,11 @@ class App extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     drawerOpen: PropTypes.bool.isRequired,
+    autoLogin: PropTypes.func.isRequired,
   };
+  componentDidMount() {
+    // this.props.autoLogin();
+  }
   render() {
     const { classes, theme, drawerOpen } = this.props;
     return (
@@ -59,7 +66,7 @@ class App extends Component {
           >
             <Switch>
               <Route exact path="/">
-                {/* <PredictionForm /> */}
+                <PredictionForm />
               </Route>
               <Route path="/AboutUs">
                 <AboutUs />
@@ -77,7 +84,7 @@ class App extends Component {
                 <Error404 />
               </Route>
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </div>
       </Router>
@@ -91,5 +98,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   withStyles(styles, { withTheme: true }),
-  connect(mapStateToProps, {})
+  connect(mapStateToProps, { autoLogin })
 )(App);

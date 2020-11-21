@@ -7,6 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
+import Popover from "@material-ui/core/Popover";
+import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,10 +23,12 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import Modal from "@material-ui/core/Modal";
 import InfoIcon from "@material-ui/icons/Info";
 import StarsIcon from "@material-ui/icons/Stars";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { withRouter } from "react-router-dom";
+import LoginUser from "../components/LoginUser";
 
 import { drawerToggle } from "../actions/ui";
 const drawerWidth = 240;
@@ -40,6 +44,9 @@ const useStyles = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+  typography: {
+    padding: theme.spacing(2),
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -78,6 +85,17 @@ const useStyles = (theme) => ({
       width: theme.spacing(9) + 1,
     },
   },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    // border: "2px solid #000",
+    // boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    top: `50%`,
+    left: `50%`,
+    transform: `translate(-50%, -50%)`,
+  },
   toolbar: {
     display: "flex",
     alignItems: "center",
@@ -99,6 +117,19 @@ export class Header extends Component {
   };
   state = {
     open: false,
+    loginOpen: false,
+    // modalStyle: this.getModalStyle,
+  };
+  handleLoginOpen = () => {
+    this.setState({
+      loginOpen: true,
+    });
+  };
+
+  handleLoginClose = () => {
+    this.setState({
+      loginOpen: false,
+    });
   };
   handleDrawerOpen = () => {
     this.props.drawerToggle(true);
@@ -111,8 +142,13 @@ export class Header extends Component {
   };
   render() {
     const { classes, theme } = this.props;
-    const { open } = this.state;
-    const { handleDrawerOpen, handleDrawerClose } = this;
+    const { open, loginOpen } = this.state;
+    const {
+      handleDrawerOpen,
+      handleDrawerClose,
+      handleLoginOpen,
+      handleLoginClose,
+    } = this;
     return (
       <Fragment>
         <CssBaseline />
@@ -142,7 +178,7 @@ export class Header extends Component {
             >
               <Grid item>
                 <Typography variant="h6" noWrap>
-                  Skin Disease Detector
+                  Melanoma Test
                 </Typography>
               </Grid>
 
@@ -150,6 +186,24 @@ export class Header extends Component {
                 <div>{/* <LoginForm /> */}</div>
               </Grid>
             </Grid>
+            <Button color="inherit" onClick={handleLoginOpen}>
+              Login
+            </Button>
+            <Modal
+              open={loginOpen}
+              onClose={handleLoginClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              <div className={classes.paper}>
+                <h2 id="simple-modal-title">Login</h2>
+                <p id="simple-modal-description">
+                  Login with your email and password or{" "}
+                  <a href="/Register">Register</a>
+                </p>
+                <LoginUser />
+              </div>
+            </Modal>
           </Toolbar>
         </AppBar>
         <Drawer

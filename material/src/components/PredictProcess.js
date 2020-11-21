@@ -30,6 +30,7 @@ export class PredictProcess extends Component {
     score: 0,
     imageId: 0,
     dialogOpen: false,
+    path: "",
   };
 
   handleDialogOpen = () => {
@@ -45,14 +46,16 @@ export class PredictProcess extends Component {
   };
 
   componentDidMount() {
+    // console.log(this.props.values.file);
     this.setState({
       score: this.props.values.file.score,
       imageId: this.props.values.file.id,
+      path: this.props.values.file.name,
     });
   }
 
   render() {
-    const { predicted, score, imageId, dialogOpen } = this.state;
+    const { predicted, score, imageId, dialogOpen, path } = this.state;
     const { classes, theme } = this.props;
     const severity = clsx({
       success: score <= 20,
@@ -67,7 +70,7 @@ export class PredictProcess extends Component {
         {!predicted && (
           <Fragment>
             <CircularProgress color="secondary" />
-            <Typography>Processing Your Chest X-ray ...</Typography>
+            <Typography>Processing Your derm image...</Typography>
           </Fragment>
         )}
 
@@ -78,12 +81,12 @@ export class PredictProcess extends Component {
                 <CardMedia
                   onClick={this.handleDialogOpen}
                   style={{ height: "250px" }}
-                  image={`/api/images/${imageId}/?imagefile`}
+                  image={`http://localhost:3005/${path}`}
                   title="X-ray image"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h6" component="h2">
-                    COVID-19 Result
+                    Melanoma Test Result
                   </Typography>
                   <Typography
                     variant="body2"
@@ -91,7 +94,7 @@ export class PredictProcess extends Component {
                     component="p"
                   >
                     <Alert severity={severity}>
-                      The chance of being affected by COVID-19 is{" "}
+                      The chance of you have Melanoma is{" "}
                       <strong>
                         {(Math.round(score * 100) / 100).toFixed(2)}
                       </strong>
@@ -124,7 +127,7 @@ export class PredictProcess extends Component {
               <DialogContent>
                 <img
                   style={{ width: "100%" }}
-                  src={`/api/images/${imageId}/?imagefile`}
+                  src={`http://localhost:3005/${path}`}
                 />
               </DialogContent>
               <DialogActions>

@@ -53,12 +53,12 @@ export class PredictionForm extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.upload_res != this.props.upload_res) {
       let file = {
-        id: this.props.upload_res.id,
-        name: this.props.upload_res.file,
+        id: this.props.upload_res._id,
+        name: this.props.upload_res.path,
         score: this.props.upload_res.score,
       };
       this.setState({ file: file });
-      if (this.props.upload_res.file != "") {
+      if (this.props.upload_res.path != "") {
         this.setState({
           fileUploaded: true,
         });
@@ -71,7 +71,7 @@ export class PredictionForm extends Component {
   }
 
   getSteps = () => {
-    return ["Select X-Ray Image", "Analyzing&Predicting", "Result"];
+    return ["Select Image", "Analyzing&Predicting", "Result"];
   };
 
   handleNext = () => {
@@ -103,10 +103,10 @@ export class PredictionForm extends Component {
     this.setState({ fileUploaded: false });
     let files = e.target.files;
 
-    var csrftoken = this.getCookie("csrftoken");
+    // var csrftoken = this.getCookie("csrftoken");
     var formData = new FormData();
     formData.append("file", files[0]);
-    formData.append("csrfmiddlewaretoken", csrftoken);
+    // formData.append("csrfmiddlewaretoken", csrftoken);
     this.props.uploadImage(formData);
   };
 
@@ -134,7 +134,7 @@ export class PredictionForm extends Component {
                   orientation="vertical"
                 >
                   <Step>
-                    <StepLabel>Select X-Ray Image</StepLabel>
+                    <StepLabel>Select Image</StepLabel>
                     <StepContent>
                       <UploadImage
                         handleNext={this.handleNext}
@@ -175,14 +175,8 @@ export class PredictionForm extends Component {
               </div>
               <Typography style={{ marginTop: "20px" }} variant="subtitle2">
                 <strong>Note: </strong>
-                Since we had about 6000 chest X-ray images to train on, and
-                because of usage of deep learning in prediction and challenges
-                on interpretability, our prediction may not be true in all
-                cases. We had an accuray of about 98.4% on about 1000 test
-                cases. So we strongly recommend you to refer to a doctor for
-                more accurate predictions. We appreciate any doctor or
-                organization that help us with more labeled chest X-ray images
-                to improve our system.
+                This system predicts the probability of having Melanoma for a
+                patient by derm images.
               </Typography>
             </div>
             <div className="col-sm-2 col-md-2"></div>

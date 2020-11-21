@@ -115,7 +115,7 @@ export class UploadImage extends Component {
     return (
       <Fragment>
         <Typography>
-          Please Select an image of your/your patient's Chest X-ray
+          Please Select an image of your/your patient's derm
         </Typography>
         <div className={classes.actionsContainer}>
           <div>
